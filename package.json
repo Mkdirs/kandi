@@ -1,0 +1,15 @@
+{
+  "name": "kandi",
+  "version": "1.0.0",
+  "description": "raymarching engine",
+  "main": "out/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc --watch"
+  },
+  "author": "Mkdirs",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

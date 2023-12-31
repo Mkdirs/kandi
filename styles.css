@@ -1,0 +1,26 @@
+body{
+    margin: 0px;
+    overflow: hidden;
+}
+#toolbar{
+    display: flex;
+    width: 100%;
+    height: 40px;
+    background-color: red;
+    flex-direction: column;
+    justify-content: center;
+
+}
+#toolbar-container{
+    display: flex;
+}
+.toolbar-item{
+    margin-right: 50px;
+}
+#viewport{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    cursor: none;
+}

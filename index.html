@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kandi</title>
+    <link href="styles.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div id="toolbar">
+        <div id="toolbar-container">
+            <div class="toolbar-item">
+                <label for="render-mode" title="How the scene is rendered">Render mode</label>
+                <select name="render-mode" id="render-mode">
+                    <option value='0' selected>Normal</option>
+                    <option value='1'>Signed Distance Field</option>
+                </select>
+            </div>
+    
+            <div class="toolbar-item">
+                <input name="epsilon" id="epsilon" type="range" min="0.001" max="1" step="0.001">
+                <label id="epsilon-label" for="epsilon" title="The precision of the render (lower = better)">ε=0.001</label>
+                
+            </div>
+        </div>
+        
+        
+    </div>
+    <canvas id="viewport"></canvas>
+    
+    <script src="out/index.js" type="module"></script>
+</body>
+</html>

@@ -153,12 +153,31 @@ export class Renderer {
                 return b;
             }
 
+            
+            SceneObject opSmoothUnion(SceneObject a, SceneObject b, float k ){
+                float h = clamp( 0.5 + 0.5*(b.dist-a.dist)/k, 0.0, 1.0 );
+
+                Material m = Material(mix(b.material.color, a.material.color, h));
+
+                float dist = mix( b.dist, a.dist, h ) - k*h*(1.0-h);
+
+                return SceneObject(m, dist);
+            }
+
 
             SceneObject opInter(SceneObject a, SceneObject b){
                 float m = max(a.dist, b.dist);
                 if(m == a.dist){return a;}
 
                 return b;
+            }
+
+            SceneObject opSmoothInter(SceneObject a, SceneObject b, float k ){
+                float h = clamp( 0.5 - 0.5*(b.dist-a.dist)/k, 0.0, 1.0 );
+                Material m = Material(mix(b.material.color, a.material.color, h));
+
+                float dist = mix( b.dist, a.dist, h ) + k*h*(1.0-h);
+                return SceneObject(m, dist);
             }
 
             SceneObject opDiff(SceneObject a, SceneObject b){
@@ -170,27 +189,30 @@ export class Renderer {
                 return a;
             }
 
+            SceneObject opSmoothDiff(SceneObject a, SceneObject b, float k ){
+                float h = clamp( 0.5 - 0.5*(b.dist+a.dist)/k, 0.0, 1.0 );
+                Material m = Material(mix(b.material.color, a.material.color, h));
+                float dist = mix( a.dist, -b.dist, h ) + k*h*(1.0-h);
+                return SceneObject(m, dist);
+            }
+
             SceneObject scene(vec3 p){
 
+
                 SDFPrimitive a = empty(vec3(0, 0, 5.0));
-                a.transform.scale.x = 1.5;
-                a.material.color = vec3(1, 0, 0);
-                SceneObject _a = sdSphere(a, applyTransforms(p, a));
+                a.transform.rotation = vec3(0, 0, 0)*deltaTime;
+                a.material.color = vec3(0, 0, 1);
+                SceneObject _a = sdBox(a, applyTransforms(p, a));
 
 
-                SDFPrimitive b = empty(vec3(0, 0, 5.0));
-                b.transform.rotation = vec3(0, -1, 0)*deltaTime;
-                b.material.color = vec3(0, 0, 1);
-                SceneObject _b = sdBox(b, applyTransforms(p, b));
-
-
-                SDFPrimitive c = empty(vec3(0, sin(2.5*deltaTime)/2.0, 5.0));
-                c.transform.scale.x = .7;
-                c.material.color = vec3(1);
-                SceneObject _c = sdSphere(c, applyTransforms(p, c));
+                SDFPrimitive b = empty(vec3(0, 0, 4.0));
+                b.transform.position += vec3(1.5, 0, 0) * sin(2.0*deltaTime);
+                b.material.color = vec3(1, 0, 0);
+                b.transform.scale.x = 0.5;
+                SceneObject _b = sdSphere(b, applyTransforms(p, b));
 
                 
-                return opUnion(_c, opDiff(_b, _a));
+                return opSmoothDiff(_a, _b, 1.0);
             }
 
             RaymarchHit raymarch(vec3 camOrigin, vec3 camDir){

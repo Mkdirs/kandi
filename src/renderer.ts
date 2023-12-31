@@ -220,14 +220,24 @@ export class Renderer{
                 SceneObject _a = sdBox(a, applyTransforms(p, a));
 
 
-                SDFPrimitive b = empty(vec3(0, 0, 4.0));
-                b.transform.position += vec3(1.5, 0, 0) * sin(2.0*deltaTime);
-                b.material.color = vec3(1, 0, 0);
-                b.transform.scale.x = 0.5;
+                SDFPrimitive b = empty(vec3(1.5, 0, 5.0));
+                b.transform.scale.x = 1.0;
+                //b.transform.position += vec3(1.5, 0, 0) * sin(2.0*deltaTime);
+                b.material.color = vec3(0, 1, 0);
                 SceneObject _b = sdSphere(b, applyTransforms(p, b));
 
+                SDFPrimitive b2 = b;
+                b2.transform.position.x *= -1.0;
+                b2.material.color = vec3(0, 1, 0);
+                SceneObject _b2 = sdSphere(b2, applyTransforms(p, b2));
+
+                SDFPrimitive b3 = b;
+                b3.transform.position.xy = vec2(0, 1.5);
+                b3.material.color = vec3(1, 0, 0);
+                SceneObject _b3 = sdSphere(b3, applyTransforms(p, b3));
+
                 
-                return opSmoothDiff(_a, _b, 1.0);
+                return  opUnion(opSmoothUnion(_a, _b3, 1.25), opUnion(opSmoothUnion(_a, _b2, 1.25), opSmoothUnion(_a, _b, 1.25) ));
             }
 
             RaymarchHit raymarch(vec3 camOrigin, vec3 camDir){
@@ -271,7 +281,7 @@ export class Renderer{
 
                 
                 if(length(mousePos-uv) <= 0.0125 && mouseInViewport){
-                    col = vec3(1);
+                    col = vec3(0);
                     if(hit.hit && renderMode != ${RenderMode.SDF}){
                         col = vec3(1)-hit.object.material.color;
                     }

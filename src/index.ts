@@ -5,7 +5,7 @@ const canvas = document.getElementById("viewport")!! as HTMLCanvasElement;
 const gl = canvas.getContext("webgl2")!!;
 
 const renderer = new Renderer(gl);
-renderer.backgroundColor = [0.3, 0.3, 0.3];
+renderer.backgroundColor = [1, 1, 1];
 
 const renderModeSelect = document.getElementById('render-mode')!! as HTMLSelectElement;
 renderer.renderMode = Number.parseInt(renderModeSelect.value) as RenderMode;

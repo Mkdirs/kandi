@@ -214,30 +214,20 @@ export class Renderer{
             SceneObject scene(vec3 p){
 
 
-                SDFPrimitive a = empty(vec3(0, 0, 5.0));
+                SDFPrimitive a = empty(vec3(-2.5, 0, 5.0));
                 a.transform.rotation = vec3(0, 0, 0)*deltaTime;
-                a.material.color = vec3(0, 0, 1);
+                a.material.color = vec3(0.5, 0.2, 1);
                 SceneObject _a = sdBox(a, applyTransforms(p, a));
 
 
                 SDFPrimitive b = empty(vec3(1.5, 0, 5.0));
                 b.transform.scale.x = 1.0;
-                //b.transform.position += vec3(1.5, 0, 0) * sin(2.0*deltaTime);
-                b.material.color = vec3(0, 1, 0);
+                b.transform.position += vec3(2.5, 0, 0) * sin(1.5*deltaTime);
+                b.material.color = vec3(0.5, 1, 0.25);
                 SceneObject _b = sdSphere(b, applyTransforms(p, b));
 
-                SDFPrimitive b2 = b;
-                b2.transform.position.x *= -1.0;
-                b2.material.color = vec3(0, 1, 0);
-                SceneObject _b2 = sdSphere(b2, applyTransforms(p, b2));
-
-                SDFPrimitive b3 = b;
-                b3.transform.position.xy = vec2(0, 1.5);
-                b3.material.color = vec3(1, 0, 0);
-                SceneObject _b3 = sdSphere(b3, applyTransforms(p, b3));
-
-                
-                return  opUnion(opSmoothUnion(_a, _b3, 1.25), opUnion(opSmoothUnion(_a, _b2, 1.25), opSmoothUnion(_a, _b, 1.25) ));
+                float dist = length(b.transform.position - a.transform.position);
+                return  opSmoothUnion(_a, _b, dist / 2.5);
             }
 
             RaymarchHit raymarch(vec3 camOrigin, vec3 camDir){
